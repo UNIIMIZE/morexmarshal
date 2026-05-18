@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morex Marshal | Product Collection</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS reset and variables */
+        :root {
+            --bg-color: #030303;
+            --surface-color: #0a0a0a;
+            --surface-light: #141414;
+            --surface-lighter: #1f1f1f;
+            --text-primary: #ffffff;
+            --text-secondary: #a3a3a3;
+            --text-tertiary: #737373;
+            --accent-color: #a87b51; /* Woody golden brown */
+            --accent-hover: #c2956e;
+            --accent-gradient: linear-gradient(135deg, #d4a373 0%, #a87b51 50%, #7d5334 100%);
+            --border-color: #262626;
+            --transition-fast: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-slow: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        a, button, input, textarea, .product-card { cursor: none; }
+
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+            border: 2px solid var(--accent-color); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+        .custom-cursor.hover {
+            width: 50px; height: 50px; background-color: rgba(168, 123, 81, 0.4);
+            border-color: transparent;
+        }
+
+        .ambient-orb {
+            position: fixed; border-radius: 50%; filter: blur(80px);
+            z-index: -1; pointer-events: none; opacity: 0.3;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: rgba(168, 123, 81, 0.15); top: -10%; left: -10%; }
+        .orb-2 { width: 500px; height: 500px; background: rgba(212, 163, 115, 0.1); bottom: -20%; right: -10%; animation-delay: -5s; }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, 50px) scale(1.1); }
+            100% { transform: translate(-50px, 100px) scale(0.9); }
+        }
+
+        /* --- Core Layout & Utilities --- */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 1.1rem 2.8rem; font-family: var(--font-heading); font-weight: 600;
+            font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; border: none; transition: var(--transition-fast);
+            background: var(--accent-gradient); color: #000; border-radius: 30px;
+            position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(168, 123, 81, 0.2);
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(168, 123, 81, 0.4); color: #000; }
+
+        .btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); transition: 0.5s;
+        }
+
+        .btn:hover::after { left: 100%; }
+        .btn-primary { background: var(--accent-gradient); color: #000; }
+
+        /* --- Typography --- */
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 800; line-height: 1.1; }
+        h2 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: -1px; }
+
+        /* --- Navigation --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 0; z-index: 1000;
+            transition: var(--transition-slow);
+            background: linear-gradient(to bottom, rgba(3,3,3,0.9) 0%, transparent 100%);
+        }
+        .navbar.scrolled {
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            padding: 1rem 0; border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        
+        .nav-links { display: flex; gap: 3.5rem; }
+        .nav-links a {
+            font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; color: var(--text-secondary);
+            transition: var(--transition-fast); text-transform: uppercase; position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 2px; background: var(--accent-gradient); transition: var(--transition-fast);
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+        /* --- Shop Header --- */
+        .shop-header {
+            padding: 10rem 0 4rem;
+            text-align: center;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .shop-header h1 {
+            font-size: clamp(3rem, 7vw, 5rem);
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+        }
+
+        .shop-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* --- Filters --- */
+        .filters {
+            padding: 3rem 0;
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+        }
+
+        .filter-list {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--surface-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.8rem 1.8rem;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            border-radius: 40px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-gradient);
+            color: #000;
+            border-color: var(--accent-color);
+        }
+
+        /* --- Products Grid --- */
+        .products { padding: 6rem 0; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem; }
+        
+        .product-card {
+            background: linear-gradient(180deg, rgba(25,25,25,0.6) 0%, rgba(5,5,5,0.8) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition-slow);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex; flex-direction: column;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, rgba(168, 123, 81, 0.15), transparent 60%);
+            opacity: 0;
+            transition: var(--transition-slow);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card.hidden { display: none; }
+        .product-card:hover { border-color: var(--accent-hover); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 123, 81, 0.2); }
+        .product-badge { position: absolute; top: 1.5rem; left: 1.5rem; background-color: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.1); font-family: var(--font-heading); font-weight: 600; font-size: 0.75rem; padding: 0.4rem 1rem; text-transform: uppercase; letter-spacing: 1px; z-index: 2; backdrop-filter: blur(5px); border-radius: 20px; }
+        .product-badge.featured { background: var(--accent-gradient); color: #000; border: none; font-weight: 800; font-size: 0.7rem; box-shadow: 0 5px 15px rgba(168, 123, 81, 0.3); padding: 0.5rem 1.2rem; }
+        
+        .product-img { position: relative; aspect-ratio: 1/1; overflow: hidden; background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, transparent 70%); border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; padding: 3rem; z-index: 1; }
+        .product-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.6)); }
+        .product-card:hover .product-img img { transform: scale(1.15) rotate(2deg); }
+        
+        .product-info { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
+        .product-category { font-size: 0.8rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.75rem; font-weight: 600; }
+        .product-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.4rem; margin-bottom: 1.5rem; line-height: 1.3; }
+        .product-specs { margin-bottom: 2rem; font-size: 0.9rem; color: var(--text-secondary); flex-grow: 1; }
+        .product-specs div { display: flex; justify-content: space-between; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px dashed rgba(255, 255, 255, 0.05); }
+        
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .btn-enquire { width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-primary); font-family: var(--font-heading); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: var(--transition-slow); border-radius: 40px; display: flex; justify-content: center; align-items: center; gap: 0.75rem; }
+        .btn-enquire:hover, .product-card:hover .btn-enquire { background: var(--text-primary); color: #000; border-color: var(--text-primary); box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2); }
+
+        /* --- No Results --- */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 5rem 0;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            display: none;
+        }
+
+        /* --- Footer --- */
+        .footer { background-color: var(--bg-color); padding: 8rem 0 3rem; border-top: 1px solid var(--border-color); }
+        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; margin-bottom: 6rem; }
+        .footer-brand p { color: var(--text-secondary); margin-top: 2rem; max-width: 350px; font-size: 1rem; }
+        .footer-title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2rem; color: var(--text-primary); letter-spacing: 1px; }
+        .footer-links { display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--text-secondary); transition: var(--transition-fast); font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--accent-color); transform: translateX(5px); }
+        .wholesale-info { display: flex; align-items: center; gap: 1rem; margin-top: 2rem; padding: 1.5rem; background: var(--surface-color); border: 1px solid var(--border-color); }
+        .wholesale-info i { font-size: 2rem; color: var(--accent-color); }
+        .social-links { display: flex; gap: 1rem; margin-top: 3rem; }
+        .social-links a { width: 45px; height: 45px; border-radius: 50%; background-color: var(--surface-light); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; color: var(--text-primary); transition: var(--transition-fast); font-size: 1.1rem; }
+        .social-links a:hover { background-color: var(--accent-color); color: #000; border-color: var(--accent-color); transform: translateY(-5px); }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 3rem; border-top: 1px solid var(--border-color); color: var(--text-tertiary); font-size: 0.9rem; }
+
+        /* --- Glass Modal for Enquiry --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-fast); }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--surface-color); border: 1px solid var(--border-color); padding: 3rem; width: 90%; max-width: 500px; transform: translateY(30px); transition: var(--transition-fast); position: relative; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; transition: var(--transition-fast); }
+        .close-modal:hover { color: var(--accent-color); transform: rotate(90deg); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-family: var(--font-heading); font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; background: var(--surface-light); border: 1px solid var(--border-color); color: var(--text-primary); font-family: var(--font-body); transition: var(--transition-fast); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-color); }
+
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background-color: rgba(3, 3, 3, 0.98); backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: center; gap: 2rem; transition: var(--transition-slow); z-index: -1; }
+            .nav-links.active { right: 0; }
+            .nav-links a { font-size: 1.5rem; }
+            .nav-actions { display: none; }
+            .mobile-menu-btn { display: block; z-index: 10; }
+            .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
+            .filter-list { flex-direction: column; padding: 0 5%; }
+            .filter-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="Morex Marshal" style="height: 75px; width: auto;">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="p/about.html">About</a></li>
+                <li><a href="p/contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Shop Header -->
+    <header class="shop-header">
+        <div class="container">
+            <h1>Product Collection</h1>
+            <p>Browse our complete division of premium athletic gear and equipment. Filter by category to find specific inventory for your athletic needs.</p>
+        </div>
+    </header>
+
+    <!-- Filters -->
+    <section class="filters">
+        <div class="container">
+            <div class="filter-list">
+                <button class="filter-btn active" data-filter="all">All Products</button>
+                <button class="filter-btn" data-filter="cricket">Cricket</button>
+                <button class="filter-btn" data-filter="badminton">Badminton</button>
+                <button class="filter-btn" data-filter="swimming">Swimming</button>
+                <button class="filter-btn" data-filter="boards">Boards</button>
+                <button class="filter-btn" data-filter="outfits">Outfits</button>
+                <button class="filter-btn" data-filter="others">Others</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products">
+        <div class="container">
+            <div class="products-grid" id="productsGrid">
+                
+                <!-- Product: Cricket Bat -->
+                <div class="product-card" data-category="cricket">
+                    <span class="product-badge featured">Featured</span>
+                    <div class="product-img"><img src="assets/images/prod_bat.png" alt="Cricket Bat"></div>
+                    <div class="product-info">
+                        <div class="product-category">Cricket / Batting</div>
+                        <h3 class="product-title">Marshal Pro Series English Willow Bat</h3>
+                        <div class="product-specs">
+                            <div><span>Grade</span> <span>Grade 2</span></div>
+                            <div><span>Weight</span> <span>2.8 - 2.10 lbs</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Cricket Ball -->
+                <div class="product-card" data-category="cricket">
+                    <span class="product-badge featured">Featured</span>
+                    <div class="product-img"><img src="assets/images/cat_cricket.png" alt="Cricket Ball"></div>
+                    <div class="product-info">
+                        <div class="product-category">Cricket / Balls</div>
+                        <h3 class="product-title">Professional Leather Match Ball</h3>
+                        <div class="product-specs">
+                            <div><span>Type</span> <span>4-Piece Alum Tanned</span></div>
+                            <div><span>Weight</span> <span>156g</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Basketball -->
+                <div class="product-card" data-category="others">
+                    <span class="product-badge">Stock Available</span>
+                    <div class="product-img"><img src="assets/images/prod_basketball.png" alt="Basketball"></div>
+                    <div class="product-info">
+                        <div class="product-category">Basketball / Match</div>
+                        <h3 class="product-title">Official Grip Control Tournament Ball</h3>
+                        <div class="product-specs">
+                            <div><span>Size</span> <span>Official Size 7</span></div>
+                            <div><span>Material</span> <span>Composite Leather</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Basketball Hoop -->
+                <div class="product-card" data-category="others">
+                    <span class="product-badge featured">Featured</span>
+                    <div class="product-img"><img src="assets/images/cat_basketball.png" alt="Basketball Hoop"></div>
+                    <div class="product-info">
+                        <div class="product-category">Basketball / Court</div>
+                        <h3 class="product-title">Heavy Duty Urban Hoop System</h3>
+                        <div class="product-specs">
+                            <div><span>Material</span> <span>Steel & Tempered Glass</span></div>
+                            <div><span>Type</span> <span>Wall Mount / Pole</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Badminton Racket -->
+                <div class="product-card" data-category="badminton">
+                    <span class="product-badge featured">Featured</span>
+                    <div class="product-img"><img src="assets/images/prod_racket.png" alt="Badminton Racket"></div>
+                    <div class="product-info">
+                        <div class="product-category">Racquets / Professional</div>
+                        <h3 class="product-title">Aero-Carbon Strike Badminton Racket</h3>
+                        <div class="product-specs">
+                            <div><span>Material</span> <span>High Modulus Graphite</span></div>
+                            <div><span>Tension</span> <span>Upto 30 lbs</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Chess Set -->
+                <div class="product-card" data-category="boards">
+                    <span class="product-badge">Premium Collection</span>
+                    <div class="product-img"><img src="assets/images/prod_chess_set.png" alt="Chess Set"></div>
+                    <div class="product-info">
+                        <div class="product-category">Strategic Games / Boards</div>
+                        <h3 class="product-title">Grandmaster Wooden Tournament Chess Set</h3>
+                        <div class="product-specs">
+                            <div><span>Wood</span> <span>Walnut & Maple</span></div>
+                            <div><span>Size</span> <span>21" x 21"</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Chess Piece -->
+                <div class="product-card" data-category="boards">
+                    <span class="product-badge featured">Featured</span>
+                    <div class="product-img"><img src="assets/images/cat_chess.png" alt="Chess Piece"></div>
+                    <div class="product-info">
+                        <div class="product-category">Strategic Games / Pieces</div>
+                        <h3 class="product-title">Handcrafted Ebony Chess Pieces</h3>
+                        <div class="product-specs">
+                            <div><span>Wood</span> <span>Ebony & Boxwood</span></div>
+                            <div><span>King Height</span> <span>4.0"</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product: Strength Weights -->
+                <div class="product-card" data-category="others">
+                    <span class="product-badge featured">Featured</span>
+                    <div class="product-img"><img src="assets/images/cat_strength.png" alt="Dumbbells"></div>
+                    <div class="product-info">
+                        <div class="product-category">Strength / Weights</div>
+                        <h3 class="product-title">Ironhaus Hex Dumbbell Set</h3>
+                        <div class="product-specs">
+                            <div><span>Material</span> <span>Rubber Coated Cast Iron</span></div>
+                            <div><span>Range</span> <span>5kg - 50kg Pairs</span></div>
+                        </div>
+                        <div class="product-footer">
+                            <button class="btn-enquire open-enquiry-modal"><i class="fa-regular fa-paper-plane"></i> Buy on Amazon</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Results Message -->
+                <div class="no-results" id="noResults">
+                    No products found in this category.
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/logo.png" alt="Morex Marshal" style="height: 80px; width: auto;">
+                    </a>
+                    <p>From cricket grounds to badminton courts — Morex Marshal engineers premium equipment for athletes who demand more.</p>
+                </div>
+
+                <div class="footer-links-wrapper">
+                    <div>
+                        <h4 class="footer-title">Shop</h4>
+                        <div class="footer-links">
+                            <a href="shop.html?category=cricket">Cricket</a>
+                            <a href="shop.html?category=badminton">Badminton</a>
+                            <a href="shop.html?category=swimming">Swimming</a>
+                            <a href="shop.html?category=boards">Boards</a>
+                            <a href="shop.html?category=outfits">Outfits</a>
+                            <a href="shop.html?category=others">Others</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="footer-title">Brand</h4>
+                        <div class="footer-links">
+                            <a href="p/about.html">About Us</a>
+                            <a href="p/policies.html">Policies</a>
+                            <a href="p/contact.html">Contact</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="footer-title">Social</h4>
+                        <div class="footer-links">
+                            <a href="#">Instagram</a>
+                            <a href="#">Twitter</a>
+                            <a href="#">Facebook</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Morex Marshal. All rights reserved.</p>
+                <div style="display: flex; gap: 2.5rem;">
+                    <a href="p/policies.html">Privacy Policy</a>
+                    <a href="p/policies.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            }
+        });
+
+        // --- Filter Logic ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+        const noResults = document.getElementById('noResults');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+                let visibleCount = 0;
+
+                productCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.classList.remove('hidden');
+                        // Reset animation
+                        card.style.animation = 'none';
+                        card.offsetHeight; /* trigger reflow */
+                        card.style.animation = null; 
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+            });
+        });
+
+
+        // --- URL Parameter Filter Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            if (category) {
+                const targetBtn = document.querySelector(`.filter-btn[data-filter="${category}"]`);
+                if (targetBtn) {
+                    targetBtn.click();
+                }
+            }
+        });
+
+        // --- Product Click Redirect ---
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open('https://www.amazon.in/stores/Morex/page/479110AC-2FF5-4F45-A068-EE28A6F5C030?lp_context_asin=B0FMF9RYVJ&store_ref=bl_ast_dp_brandlogo_sto&ref_=cm_sw_r_ud_ast_store_EDQ6YMEZ39FJMRXTE7FChome', '_blank');
+            });
+        });
+        // --- Custom Cursor Logic ---
+        const cursor = document.getElementById('customCursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.querySelectorAll('a, button, input, textarea, .product-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script>
+        // --- 3D Vanilla Tilt Initialization ---
+        VanillaTilt.init(document.querySelectorAll(".product-card"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.15,
+            scale: 1.05
+        });
+    </script>
+</body>
+</html>
