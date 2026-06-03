@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morex - Contact Us</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .contact-split {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .contact-left {
+            flex: 1;
+            background: linear-gradient(rgba(26,26,26,0.9), rgba(26,26,26,0.9)), url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2000&auto=format&fit=crop') center/cover;
+            color: white;
+            padding: 150px 80px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .contact-right {
+            flex: 1;
+            background: white;
+            padding: 150px 80px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .contact-info-block {
+            margin-bottom: 40px;
+        }
+        
+        .contact-info-block h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .contact-info-block p {
+            font-size: 24px;
+            font-family: var(--font-heading);
+            letter-spacing: 1px;
+        }
+        
+        .custom-form .form-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .custom-form input, .custom-form textarea {
+            width: 100%;
+            padding: 16px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+            font-size: 18px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+        
+        .custom-form input:focus, .custom-form textarea:focus {
+            border-bottom-color: var(--primary);
+        }
+        
+        .custom-form label {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            font-size: 18px;
+            color: rgba(0,0,0,0.4);
+            pointer-events: none;
+            transition: 0.3s;
+        }
+        
+        .custom-form input:focus ~ label,
+        .custom-form input:valid ~ label,
+        .custom-form textarea:focus ~ label,
+        .custom-form textarea:valid ~ label {
+            top: -12px;
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        @media (max-width: 992px) {
+            .contact-split { flex-direction: column; }
+            .contact-left, .contact-right { padding: 120px 40px 60px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="loader-logo">MOREX</h1>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">MOREX</a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="shop.html" class="btn btn-outline nav-cta">Shop</a></li>
+            </ul>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <div class="contact-split">
+        <div class="contact-left reveal">
+            <div>
+                <h1 style="font-size: clamp(48px, 8vw, 80px); line-height: 1.1; margin-bottom: 24px;">LET'S <span class="text-primary">TALK.</span></h1>
+                <p style="font-size: 20px; opacity: 0.8; max-width: 400px;">Whether it's a question about an order, wholesale inquiries, or just to talk sports, we're here.</p>
+            </div>
+            
+            <div style="margin-top: 60px;">
+                <div class="contact-info-block">
+                    <h4>Customer Support</h4>
+                    <p>support@morexsports.com</p>
+                </div>
+                <div class="contact-info-block">
+                    <h4>Call Us</h4>
+                    <p>+91 98765 43210</p>
+                </div>
+                <div class="contact-info-block">
+                    <h4>Headquarters</h4>
+                    <p>Level 4, Sports Arena Complex,<br>New Delhi, 110001, India</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-right reveal" style="transition-delay: 0.2s;">
+            <h2 class="category-header" style="margin-bottom: 40px;">SEND A MESSAGE</h2>
+            
+            <form class="custom-form">
+                <div class="form-group">
+                    <input type="text" id="name" required>
+                    <label for="name">Your Name</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="email" required>
+                    <label for="email">Email Address</label>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="subject" required>
+                    <label for="subject">Subject</label>
+                </div>
+                
+                <div class="form-group">
+                    <textarea id="message" rows="4" required></textarea>
+                    <label for="message">Your Message</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 18px; padding: 18px;">SEND MESSAGE</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="../index.html" class="footer-logo text-light">MOREX</a>
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="reviews.html">Reviews</a>
+                <a href="shop.html">Shop</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Morex Sports. All rights reserved.</span>
+                <span>Built for players. Made in <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" style="width: 22px; height: auto; display: inline-block; vertical-align: middle; margin-left: 6px; border-radius: 2px; filter: saturate(1.8) brightness(1.15) drop-shadow(0 0 8px rgba(255, 153, 51, 0.4));" alt="India Flag"></span>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500); 
+            }, 800); 
+        });
+
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
