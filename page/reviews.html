@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morex - Wall of Fame</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .reviews-hero {
+            padding: 200px 0 120px;
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .reviews-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255, 59, 0, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .reviews-hero h1 {
+            font-size: clamp(56px, 8vw, 96px);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+        }
+        
+        .modern-reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 60px 0;
+        }
+
+        .review-card-modern {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.04);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .review-card-modern:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            border-color: rgba(255, 59, 0, 0.2);
+        }
+
+        .review-card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--highlight));
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .review-card-modern:hover::before {
+            opacity: 1;
+        }
+
+        .review-content {
+            flex-grow: 1;
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: var(--secondary);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .review-stars {
+            color: var(--highlight);
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            padding-top: 24px;
+            margin-top: auto;
+        }
+
+        .review-author img {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+            color: var(--secondary);
+        }
+
+        .author-info span {
+            font-size: 13px;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .masonry-quote {
+            font-size: 80px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--bg-supporting);
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .review-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 50px 30px;
+            background: white;
+            color: var(--secondary);
+            border-radius: 24px;
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .stat-circle h3 {
+            font-size: 56px;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-family: var(--font-heading);
+            letter-spacing: 1px;
+        }
+
+        .stat-circle p {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: translateY(20px);
+            transition: 0.3s;
+        }
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary);
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+        .modal-close:hover { opacity: 1; color: var(--primary); }
+        
+        .review-form input, .review-form select, .review-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .review-form input:focus, .review-form select:focus, .review-form textarea:focus {
+            border-color: var(--primary);
+        }
+        .star-rating-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="loader-logo">MOREX</h1>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">MOREX</a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="shop.html" class="btn btn-outline nav-cta">Shop</a></li>
+            </ul>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <header class="reviews-hero">
+        <div class="container reveal">
+            <h1>WALL OF <span class="text-primary">FAME</span></h1>
+            <p style="font-size: 20px; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto; line-height: 1.6;">Real stories from real players. See why athletes across the country choose Morex for their game.</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="review-stats reveal">
+            <div class="stat-circle">
+                <h3>4.9/5</h3>
+                <p>Average Rating</p>
+            </div>
+            <div class="stat-circle">
+                <h3>10k+</h3>
+                <p>Happy Players</p>
+            </div>
+            <div class="stat-circle">
+                <h3>100%</h3>
+                <p>Authentic Gear</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="section bg-light">
+        <div class="container">
+            <div class="modern-reviews-grid reveal">
+                <!-- Review 1 -->
+                <div class="review-card-modern">
+                    <i class="fas fa-quote-right masonry-quote"></i>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-content">"The ping on the English Willow is absolute madness. Cleared the boundary with half the effort I usually put in. Best investment this season."</p>
+                    <div class="review-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop" alt="User">
+                        <div class="author-info">
+                            <h4>Rahul S.</h4>
+                            <span>Verified Buyer - Cricket Bat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card-modern">
+                    <i class="fas fa-quote-right masonry-quote"></i>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-content">"I've been playing badminton professionally for 4 years. The Aero Racket rivals brands that cost triple the price. Extremely lightweight and rigid."</p>
+                    <div class="review-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop" alt="User">
+                        <div class="author-info">
+                            <h4>Priya K.</h4>
+                            <span>Verified Buyer - Badminton</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card-modern">
+                    <i class="fas fa-quote-right masonry-quote"></i>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="review-content">"Bought the Champion Carrom board for family weekends. The surface is incredibly smooth, exactly like the tournament boards."</p>
+                    <div class="review-author">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop" alt="User">
+                        <div class="author-info">
+                            <h4>Amit M.</h4>
+                            <span>Verified Buyer - Board Games</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="review-card-modern">
+                    <i class="fas fa-quote-right masonry-quote"></i>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-content">"Customer service is top notch. My bat got slightly damaged during shipping, and they replaced it within 2 days with zero hassle."</p>
+                    <div class="review-author">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=150&auto=format&fit=crop" alt="User">
+                        <div class="author-info">
+                            <h4>Sanjay V.</h4>
+                            <span>Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 5 -->
+                <div class="review-card-modern">
+                    <i class="fas fa-quote-right masonry-quote"></i>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-content">"The grip on the cricket gloves is insane. Highly breathable too, didn't feel sweaty even after a 3-hour session in the sun."</p>
+                    <div class="review-author">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="User">
+                        <div class="author-info">
+                            <h4>Neha R.</h4>
+                            <span>Verified Buyer - Gloves</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 6 -->
+                <div class="review-card-modern">
+                    <i class="fas fa-quote-right masonry-quote"></i>
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-content">"Finally found athletic wear that can keep up with intense training. The fabric is premium, stretches perfectly, and looks phenomenal on the court."</p>
+                    <div class="review-author">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150&auto=format&fit=crop" alt="User">
+                        <div class="author-info">
+                            <h4>Vikram S.</h4>
+                            <span>Verified Buyer - Athletic Wear</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center reveal" style="margin-top: 40px;">
+                <button class="btn btn-primary" style="font-size: 18px; padding: 16px 40px;" onclick="openModal()">Write a Review</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Review Modal -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-box">
+            <i class="fas fa-times modal-close" onclick="closeModal()"></i>
+            <h3 style="font-size: 24px; margin-bottom: 24px;">Submit Your Review</h3>
+            <form class="review-form" id="reviewForm">
+                <input type="text" placeholder="Your Name" required>
+                <select required>
+                    <option value="">Select Product Category</option>
+                    <option value="cricket">Cricket Gear</option>
+                    <option value="badminton">Badminton Gear</option>
+                    <option value="board_games">Board Games</option>
+                    <option value="other">Other</option>
+                </select>
+                <div style="font-weight: 500; margin-bottom: 8px; opacity: 0.7;">Rating</div>
+                <div class="star-rating-input" id="starRating">
+                    <i class="fas fa-star" data-value="1"></i>
+                    <i class="fas fa-star" data-value="2"></i>
+                    <i class="fas fa-star" data-value="3"></i>
+                    <i class="fas fa-star" data-value="4"></i>
+                    <i class="fas fa-star" data-value="5"></i>
+                </div>
+                <input type="hidden" id="ratingValue" required>
+                <textarea rows="4" placeholder="Tell us about your experience..." required></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 16px;">Submit Review</button>
+            </form>
+            <div id="successMessage" style="display: none; text-align: center; padding: 40px 0;">
+                <i class="fas fa-check-circle text-primary" style="font-size: 64px; margin-bottom: 20px;"></i>
+                <h4 style="font-size: 24px; margin-bottom: 10px;">Thank You!</h4>
+                <p style="opacity: 0.7; font-size: 16px;">Your review has been successfully submitted and is awaiting approval.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="../index.html" class="footer-logo text-light">MOREX</a>
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="reviews.html">Reviews</a>
+                <a href="shop.html">Shop</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Morex Sports. All rights reserved.</span>
+                <span>Built for players. Made in <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" style="width: 22px; height: auto; display: inline-block; vertical-align: middle; margin-left: 6px; border-radius: 2px; filter: saturate(1.8) brightness(1.15) drop-shadow(0 0 8px rgba(255, 153, 51, 0.4));" alt="India Flag"></span>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500); 
+            }, 800); 
+        });
+
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Modal Logic
+        const modal = document.getElementById('reviewModal');
+        const reviewForm = document.getElementById('reviewForm');
+        const successMessage = document.getElementById('successMessage');
+        const stars = document.querySelectorAll('#starRating i');
+        const ratingInput = document.getElementById('ratingValue');
+
+        function openModal() {
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                reviewForm.style.display = 'block';
+                successMessage.style.display = 'none';
+                reviewForm.reset();
+                stars.forEach(s => {
+                    s.classList.remove('active');
+                    s.style.color = 'rgba(0,0,0,0.1)';
+                });
+                ratingInput.value = '';
+            }, 300);
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Star Rating Logic
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                ratingInput.value = value;
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= value) {
+                        s.classList.add('active');
+                        s.style.color = 'var(--primary)';
+                    } else {
+                        s.classList.remove('active');
+                        s.style.color = 'rgba(0,0,0,0.1)';
+                    }
+                });
+            });
+        });
+
+        // Form Submit
+        reviewForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!ratingInput.value) {
+                alert('Please select a star rating before submitting.');
+                return;
+            }
+            
+            // Simulate backend submission
+            reviewForm.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Auto close after 3 seconds
+            setTimeout(() => {
+                closeModal();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
