@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morex - Our Story</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-hero {
+            padding: 200px 0 120px;
+            background: linear-gradient(to right, rgba(26, 26, 26, 0.9), rgba(26, 26, 26, 0.6)), url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=2000&auto=format&fit=crop') center/cover;
+            color: white;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--primary);
+            padding: 6px 16px;
+            font-weight: 700;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .page-hero p {
+            font-size: 20px;
+            max-width: 600px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 100px 0;
+        }
+
+        .mission-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: var(--transition);
+        }
+
+        .mission-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
+        }
+
+        .mission-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 59, 0, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        .split-story {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            padding: 100px 0;
+            background: var(--bg-supporting);
+        }
+
+        .split-story-img {
+            flex: 1;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .split-story-img img {
+            width: 100%;
+            display: block;
+        }
+
+        .split-story-content {
+            flex: 1;
+        }
+
+        @media (max-width: 992px) {
+            .split-story {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="loader-logo">MOREX</h1>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">MOREX</a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="shop.html" class="btn btn-outline nav-cta">Shop</a></li>
+            </ul>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="page-hero">
+        <div class="container reveal">
+            <span class="hero-badge">Est. 1998</span>
+            <h1>THE MOREX<br><span class="text-primary">LEGACY</span></h1>
+            <p>We started in a small workshop with a single goal: to build sports equipment that refuses to compromise
+                on quality, performance, or soul.</p>
+        </div>
+    </header>
+
+    <!-- CORE VALUES -->
+    <section class="section bg-light">
+        <div class="container">
+            <div class="text-center reveal" style="margin-bottom: 60px;">
+                <h2 class="category-header">OUR PILLARS</h2>
+            </div>
+            <div class="mission-grid reveal">
+                <div class="mission-card">
+                    <div class="mission-icon"><i class="fas fa-hammer"></i></div>
+                    <h3>MASTER CRAFTSMANSHIP</h3>
+                    <p style="opacity: 0.8; margin-top: 16px;">Every bat is hand-pressed, every racket meticulously
+                        strung. We believe in the human touch that mass production simply cannot replicate.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>UNYIELDING PERFORMANCE</h3>
+                    <p style="opacity: 0.8; margin-top: 16px;">Our gear undergoes rigorous stress testing. If it doesn't
+                        perform flawlessly on the pitch or court, it doesn't leave our factory.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-icon"><i class="fas fa-heart"></i></div>
+                    <h3>FOR THE LOVE OF PLAY</h3>
+                    <p style="opacity: 0.8; margin-top: 16px;">Whether it's a Sunday morning cricket match or an intense
+                        carrom duel, we make equipment that honors the spirit of the game.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPLIT STORY -->
+    <section class="split-story">
+        <div class="container" style="display: flex; gap: 80px; align-items: center; flex-wrap: wrap;">
+            <div class="split-story-img reveal" style="min-width: 300px; flex: 1;">
+                <img src="https://images.unsplash.com/photo-1593341646782-e0b495cff86d?q=80&w=1974&auto=format&fit=crop"
+                    alt="Crafting a bat">
+            </div>
+            <div class="split-story-content reveal" style="min-width: 300px; flex: 1;">
+                <h2 style="font-size: 48px; margin-bottom: 24px;">MADE IN <span class="text-primary">INDIA.</span></h2>
+                <p style="font-size: 18px; line-height: 1.8; opacity: 0.8; margin-bottom: 24px;">
+                    India is a country obsessed with sports, yet premium equipment is often imported and overpriced. We
+                    changed that. For decades, athletes had to choose between affordable sub-par gear and elite
+                    equipment that broke the bank. Morex was founded to bridge this exact gap.
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; opacity: 0.8; margin-bottom: 24px;">
+                    Sourcing the finest English Willow, aerospace-grade graphite, and solid Indian wood, we manufacture
+                    our gear locally to ensure elite quality is accessible to every passionate player. Every piece of
+                    equipment is meticulously crafted by local artisans who understand the soul of the game.
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; opacity: 0.8; margin-bottom: 40px;">
+                    By keeping our supply chain tight and production within our borders, we eliminate exorbitant import
+                    duties and middlemen. The result? Professional-grade sports gear that champions performance,
+                    durability, and true Indian craftsmanship.
+                </p>
+                <a href="shop.html" class="btn btn-primary">See Our Collection</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="../index.html" class="footer-logo text-light">MOREX</a>
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="reviews.html">Reviews</a>
+                <a href="shop.html">Shop</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Morex Sports. All rights reserved.</span>
+                <span>Built for players. Made in <img src="https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" style="width: 22px; height: auto; display: inline-block; vertical-align: middle; margin-left: 6px; border-radius: 2px; filter: saturate(1.8) brightness(1.15) drop-shadow(0 0 8px rgba(255, 153, 51, 0.4));" alt="India Flag"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+
+</html>
