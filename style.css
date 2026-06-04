@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;500;700&display=swap');
 
 :root {
-    --bg-main: #F5F5F0;
-    --primary: #FF3B00;
-    --secondary: #1A1A1A;
-    --supporting: #E8E8E0;
-    --highlight: #FFD600;
-    --text-dark: #1A1A1A;
-    --text-light: #F5F5F0;
+    --bg-main: #f8f3eb;       /* Luxurious warm linen / light birchwood */
+    --primary: #875f3e;       /* Polished cedar / warm walnut */
+    --secondary: #18120e;     /* Deep dark wenge wood */
+    --supporting: #f1e6d7;    /* Soft pine / light maple */
+    --highlight: #c79b69;     /* Golden oak / warm amber */
+    --text-dark: #2e2219;     /* Deep wenge charcoal text */
+    --text-light: #faf6f0;    /* Warm ivory/linen light text */
     --font-heading: 'Bebas Neue', sans-serif;
     --font-body: 'DM Sans', sans-serif;
     --transition: all 0.3s ease;
@@ -19,13 +19,30 @@
     box-sizing: border-box;
 }
 
+::selection {
+    background-color: var(--primary);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: var(--primary);
+    color: white;
+}
+
 html {
     scroll-behavior: smooth;
     font-size: 16px;
 }
 
 body {
-    background-color: var(--bg-main);
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(248, 243, 235, 1) 0%, transparent 50%),
+        radial-gradient(circle at 90% 10%, rgba(244, 234, 218, 1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(238, 222, 203, 1) 0%, transparent 60%),
+        radial-gradient(circle at 80% 90%, rgba(230, 204, 164, 1) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(223, 191, 161, 1) 0%, transparent 50%),
+        var(--bg-main);
+    background-attachment: fixed;
     color: var(--text-dark);
     font-family: var(--font-body);
     overflow-x: hidden;
@@ -56,7 +73,7 @@ ul {
 }
 
 .bg-light {
-    background-color: var(--bg-main);
+    background: transparent;
     color: var(--text-dark);
 }
 
@@ -91,7 +108,7 @@ h4 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--secondary);
+    background-color: var(--bg-main);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -104,43 +121,74 @@ h4 {
 }
 
 .loader-logo {
-    font-size: 64px;
-    color: var(--primary);
-    margin-bottom: 20px;
-    letter-spacing: 4px;
-    animation: pulse 1.5s infinite;
+    height: 120px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+    animation: logo-zoom-in 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgba(255, 59, 0, 0.2);
-    border-top-color: var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
+    display: none !important;
 }
 
-@keyframes pulse {
+/* Concentric Outer Ring (Shiny Polished Gold Metal) */
+.spinner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(199, 155, 105, 0.15);
+    border-top-color: var(--highlight);
+    border-left-color: var(--highlight);
+    animation: premium-spin-clockwise 1.5s cubic-bezier(0.68, -0.15, 0.265, 1.35) infinite;
+    filter: drop-shadow(0 0 10px rgba(199, 155, 105, 0.65));
+}
+
+/* Concentric Inner Ring (Matte Raw Woodgrain Band) */
+.spinner::after {
+    content: "";
+    position: absolute;
+    inset: 15px;
+    border-radius: 50%;
+    border: 3px dashed rgba(135, 95, 62, 0.7);
+    border-bottom-color: var(--primary);
+    border-right-color: var(--primary);
+    animation: premium-spin-counter 2.2s linear infinite;
+    filter: drop-shadow(0 0 4px rgba(135, 95, 62, 0.2));
+}
+
+@keyframes logo-zoom-in {
     0% {
-        transform: scale(1);
+        transform: scale(0.3);
+        opacity: 0;
+        filter: drop-shadow(0 0 0 rgba(199, 155, 105, 0));
+    }
+    50% {
         opacity: 1;
     }
-
-    50% {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
-
     100% {
         transform: scale(1);
         opacity: 1;
+        filter: drop-shadow(0 10px 20px rgba(199, 155, 105, 0.3));
     }
 }
 
-@keyframes spin {
-    to {
+@keyframes premium-spin-clockwise {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes premium-spin-counter {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
     }
 }
 
@@ -171,14 +219,14 @@ h4 {
 }
 
 .btn-primary {
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #d63200;
+    background: linear-gradient(135deg, var(--highlight) 0%, var(--primary) 100%);
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(255, 59, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(135, 95, 62, 0.25);
 }
 
 .btn-outline {
@@ -193,6 +241,20 @@ h4 {
     border-color: var(--primary);
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border-color: var(--secondary);
+    color: var(--secondary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary);
+    color: var(--bg-main);
+    border-color: var(--secondary);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Typography */
@@ -214,10 +276,10 @@ h4 {
     top: 0;
     width: 100%;
     padding: 20px 0;
-    background: rgba(245, 245, 240, 0.95);
-    backdrop-filter: blur(8px);
+    background: rgba(248, 243, 235, 0.85);
+    backdrop-filter: blur(12px);
     z-index: 100;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     transition: var(--transition);
 }
 
@@ -228,10 +290,19 @@ h4 {
 }
 
 .logo {
-    font-family: var(--font-heading);
-    font-size: 32px;
-    color: var(--primary);
-    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+    transition: var(--transition);
+}
+
+.logo:hover img {
+    transform: scale(1.05);
 }
 
 .nav-links {
@@ -245,6 +316,7 @@ h4 {
     font-size: 15px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: var(--text-dark);
     transition: var(--transition);
 }
 
@@ -317,8 +389,8 @@ h4 {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--highlight);
-    color: var(--secondary);
+    background-color: var(--primary);
+    color: white;
     font-weight: 700;
     padding: 8px 20px;
     border-radius: 20px;
@@ -519,7 +591,7 @@ h4 {
 
 .bento-box:hover {
     background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 59, 0, 0.3);
+    border-color: rgba(223, 186, 107, 0.3);
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
@@ -529,8 +601,8 @@ h4 {
 }
 
 .bento-wide:first-child {
-    background: linear-gradient(135deg, rgba(255, 59, 0, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
-    border-color: rgba(255, 59, 0, 0.2);
+    background: linear-gradient(135deg, rgba(223, 186, 107, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-color: rgba(223, 186, 107, 0.2);
 }
 
 .bento-square {
@@ -578,8 +650,8 @@ h4 {
 }
 
 .product-card {
-    background: white;
-    border: 1px solid rgba(0,0,0,0.05);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 16px;
     overflow: hidden;
     transition: var(--transition);
@@ -590,21 +662,25 @@ h4 {
 
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    border-color: rgba(255, 59, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+    border-color: var(--primary);
 }
 
 .product-img-wrapper {
     position: relative;
     width: 100%;
-    padding-top: 100%; /* 1:1 Aspect Ratio */
-    background: #f8f8f8;
+    padding-top: 100%;
+    /* 1:1 Aspect Ratio */
+    background: var(--supporting);
     overflow: hidden;
 }
 
 .product-img-wrapper img {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
@@ -647,7 +723,7 @@ h4 {
 .product-card h3 {
     font-size: 24px;
     margin-bottom: 8px;
-    color: var(--secondary);
+    color: var(--text-dark);
     letter-spacing: 0.5px;
     font-family: var(--font-heading);
 }
@@ -655,7 +731,7 @@ h4 {
 .product-price {
     font-size: 18px;
     font-weight: 600;
-    color: var(--secondary);
+    color: var(--text-dark);
     margin-bottom: 20px;
 }
 
@@ -668,8 +744,8 @@ h4 {
 
 .btn-add {
     margin-top: auto;
-    background: #f5f5f0;
-    color: var(--secondary);
+    background: var(--supporting);
+    color: var(--text-dark);
     border: none;
     padding: 12px;
     border-radius: 8px;
@@ -775,12 +851,12 @@ h4 {
 }
 
 .review-card {
-    background: white;
+    background: linear-gradient(to bottom, var(--supporting) 0%, var(--supporting) 35%, #ffffff 35%, #ffffff 100%);
     padding: 40px 30px;
     border-radius: 12px;
     text-align: left;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     transition: var(--transition);
     position: relative;
     overflow: hidden;
@@ -788,7 +864,7 @@ h4 {
 
 .review-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     border-color: var(--primary);
 }
 
@@ -803,7 +879,7 @@ h4 {
 }
 
 .review-card:hover .quote-bg {
-    color: rgba(255, 59, 0, 0.05);
+    color: rgba(223, 186, 107, 0.05);
     transform: scale(1.1) rotate(5deg);
 }
 
@@ -818,7 +894,7 @@ h4 {
 .review-text {
     font-size: 17px;
     line-height: 1.6;
-    color: var(--secondary);
+    color: var(--text-dark);
     margin-bottom: 30px;
     font-style: italic;
     position: relative;
@@ -829,7 +905,7 @@ h4 {
     display: flex;
     align-items: center;
     gap: 16px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding-top: 20px;
     position: relative;
     z-index: 1;
@@ -858,7 +934,7 @@ h4 {
 
 .reviewer-location {
     font-size: 13px;
-    color: var(--secondary);
+    color: var(--text-dark);
     opacity: 0.7;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -874,12 +950,22 @@ h4 {
 }
 
 .footer-logo {
-    font-family: var(--font-heading);
-    font-size: 48px;
+    display: inline-block;
     margin-bottom: 32px;
+}
+
+.footer-logo img {
+    height: 50px;
+    width: auto;
     display: block;
-    letter-spacing: 2px;
-    color: white;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+    transition: var(--transition);
+}
+
+.footer-logo:hover img {
+    transform: scale(1.05);
+    opacity: 1;
 }
 
 .footer-links {
@@ -968,9 +1054,11 @@ h4 {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
     }
+
     .bento-wide {
         grid-column: span 2;
     }
+
     .bento-square {
         grid-column: span 1;
     }
@@ -981,6 +1069,10 @@ h4 {
 }
 
 @media (max-width: 768px) {
+    body {
+        zoom: 0.75;
+    }
+
     .nav-links {
         display: none;
         position: absolute;
@@ -1008,8 +1100,9 @@ h4 {
     .bento-grid {
         grid-template-columns: 1fr;
     }
-    
-    .bento-wide, .bento-square {
+
+    .bento-wide,
+    .bento-square {
         grid-column: span 1;
     }
 
