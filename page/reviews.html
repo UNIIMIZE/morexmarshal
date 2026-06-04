@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morex - Wall of Fame</title>
+    <link rel="icon" type="image/png" href="../favicon-light.png?v=2" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" href="../favicon-dark.png?v=2" media="(prefers-color-scheme: dark)">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +21,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(255, 59, 0, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at center, rgba(135, 95, 62, 0.15) 0%, transparent 60%);
             pointer-events: none;
         }
         .reviews-hero h1 {
@@ -53,7 +55,7 @@
         .review-card-modern:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-            border-color: rgba(255, 59, 0, 0.2);
+            border-color: rgba(135, 95, 62, 0.2);
         }
 
         .review-card-modern::before {
@@ -228,14 +230,14 @@
     <!-- LOADING SCREEN -->
     <div id="loader">
         <div class="loader-content">
-            <h1 class="loader-logo">MOREX</h1>
+            <img src="../logo.png" alt="Morex Logo" class="loader-logo">
             <div class="spinner"></div>
         </div>
     </div>
 
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="../index.html" class="logo">MOREX</a>
+            <a href="../index.html" class="logo"><img src="../logo.png" alt="Morex Logo"></a>
             <ul class="nav-links">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
@@ -413,7 +415,7 @@
 
     <footer class="footer">
         <div class="container">
-            <a href="../index.html" class="footer-logo text-light">MOREX</a>
+            <a href="../index.html" class="footer-logo"><img src="../logo.png" alt="Morex Logo"></a>
             <div class="footer-links">
                 <a href="../index.html">Home</a>
                 <a href="about.html">About</a>
@@ -421,7 +423,7 @@
                 <a href="shop.html">Shop</a>
             </div>
             <div class="footer-social">
-                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://instagram.com/morexmarshal" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-whatsapp"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
             </div>
